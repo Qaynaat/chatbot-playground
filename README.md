@@ -12,8 +12,8 @@ This repository contains the chatbot projects I build while learning:
 
 ## Planned Projects
 
-- [ ] Echo Bot
-- [ ] Calculator Bot
+- [ ✔️] Echo Bot
+- [ ✔️] Calculator Bot
 - [ ] FAQ Bot
 - [ ] Menu Bot
 - [ ] Weather Bot

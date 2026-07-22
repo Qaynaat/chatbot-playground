@@ -1,45 +1,59 @@
+def add(a, b):
+    return a + b
 
-while True:
-    num1 = (float(input("Enter first number : ")))
-    operation = input("Enter operation (+, -, *, /): ")
-    num2 = (float(input("Enter second number : ")))
+def subtract(a, b):
+    return a - b
+
+def multiply(a, b):
+    return a * b
+
+def divide(a, b):
+    if b==0:
+        return "Error: Cannot divide by zero ."
+
+    return a / b 
+
+def calculate(num1, operation, num2):
+
     if operation == "+" :
-        result = num1 + num2
-        print(f"The Addition is : \n{num1} + {num2} = {result}")
+        return add(num1 , num2)
 
     elif operation == "-" :
-        result = num1 - num2
-        print(f"The Subtraction is :\n{num1} - {num2} = {result}")
+        return subtract(num1 , num2)
 
     elif operation == "*" :
-        result = num1 * num2
-        print(f"The Product is :\n{num1} * {num2} = {result}")
+        return multiply(num1 , num2)
 
     elif operation == "/" :
-        if num2==0 :
-            print("Error: Cannot divide by zero.")
-            
-        else:
-            result = num1/num2
-            print(f"The Division is :\n{num1} / {num2} = {result}")
+        return divide(num1 , num2)
 
     else:
-        print("Invalid Input")
+        return "Invalid Input"
 
-    
+
+def main():
     while True:
+        num1 = float(input("Enter first number : "))
+        operation = input("Enter operation (+, -, *, /): ")
+        num2 = float(input("Enter second number : "))
+        result = calculate(num1, operation, num2)
+        print(result)
+
+
+        while True:
             user_choice = input("Enter 'y' to continue calculation and 'n' to exit: ").lower()
-            
+                
             if user_choice in ['y', 'n']:
                 break
             else:
                 print("Invalid choice. Please enter 'y' or 'n'.\n")
 
-    if user_choice == 'n':
-        break
+        if user_choice == 'n':
+            break
 
-print("Thank you for using Calculator Bot!")
-print("Goodbye!")
+    print("Thank you for using Calculator Bot!")
+    print("Goodbye!")
 
+main()
 
 
