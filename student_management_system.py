@@ -8,6 +8,12 @@ def show_menu():
     print("5. Delete Student")
     print("6. Exit")
 
+def display_student(student):
+
+    print(f"Name: {student['name']}")
+    print(f"Age: {student['age']}")
+    print(f"City:{student['city']}")
+
 def add_students():
     name = input("Enter Student name: ")
     age = input("Enter Student age: ")
@@ -17,22 +23,17 @@ def add_students():
         "age" : age ,
         "city" : city
     }
-
     students.append(student)
-
     print("Student added Successfully! ")
 
 def view_students():
     if not students:
         print("No students found.")
         return
-
     print("\n ----Students List----")
 
     for student in students:
-        print(f"Name : {student['name']}")
-        print(f"Age : {student['age']}")
-        print(f"City : {student['city']}")
+        display_student(student)
         print("-------------------------------------")
 
 def search_student_by_name():
@@ -42,9 +43,7 @@ def search_student_by_name():
         if student["name"].lower()== search_name.lower():
             found = True
             print("\n Student Found!")
-            print(f"Name: {student['name']}")
-            print(f"Age: {student['age']}")
-            print(f"City:{student['city']}")
+            display_student(student)
             
     if not found :
         print("Student not found.")
@@ -56,9 +55,7 @@ def search_student_by_age():
         if student["age"] == search_age:
             found = True
             print("\n Student Found!")
-            print(f"Name:{student['name']}")
-            print(f"Age:{student['age']}")
-            print(f"City:{student['city']}")
+            display_student(student)
             
     if not found :
         print("Student not found.")
@@ -72,9 +69,7 @@ def search_student_by_city():
         if student["city"].lower() == search_city.lower():
             found = True 
             print("\n Student Found!")
-            print(f"Name:{student['name']}")
-            print(f"Age:{student['age']}")
-            print(f"City:{student['city']}")
+            display_student(student)
             
     if not found :
         print("Student not found.")
@@ -97,6 +92,62 @@ def search_student():
     else:
         print("Invalid Choice!")
 
+
+def update_student():
+    name = input("Enter student name: ").strip()
+    found = False
+    for student in students:
+        if student["name"].lower()== name.lower():
+            found = True
+            print("\n====CURRENT STUDENT DATA====")
+            display_student(student)
+            print("------------------------------")
+
+            new_name = input(f"Enter new name (press Enter to keep current): ").strip()
+            new_age = input(f"Enter new age (press Enter to keep current): ").strip()
+            new_city = input(f"Enter new city (press Enter to keep current): ").strip()
+
+            if new_name :
+                student["name"] = new_name
+            if new_age :
+                student["age"] = new_age
+            if new_city :
+                student["city"] = new_city
+
+            print("\nUpdated Student:")
+            display_student(student)
+            break
+
+    if not found :
+        print("Student not found.")
+def delete_student():
+    name = input("Enter student name: ").strip()
+    found = False
+    for student in students:
+        if student["name"].lower()== name.lower():
+            found = True
+            print("\n====CURRENT STUDENT DATA====")
+            display_student(student)
+            print("------------------------------")
+
+            confirm = input("Delete this student? (Y/N): ").lower().strip()
+            if confirm == "y":
+                students.remove(student)
+                print("Student deleted successfully!")
+                view_students()
+                break
+
+            elif confirm == "n":
+                print("Deletion cancelled.")
+                break
+
+            else:
+                print("Invalid choice.")
+                
+    if not found :
+        print("Student not found.")
+
+
 def main():
     while True:
         show_menu()
@@ -110,9 +161,9 @@ def main():
         elif choice == "3":
             search_student()
         elif choice == "4":
-            print("Update feature coming soon!")
+            update_student()
         elif choice == "5":
-            print("Delete feature coming soon!")
+            delete_student()
         elif choice == "6":
             print("Thank you for using Student Management System!")
             break
