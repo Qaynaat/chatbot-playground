@@ -8,11 +8,13 @@ def show_menu():
     print("5. Delete Student")
     print("6. Exit")
 
+
 def display_student(student):
 
     print(f"Name: {student['name']}")
     print(f"Age: {student['age']}")
     print(f"City:{student['city']}")
+
 
 def add_students():
     name = input("Enter Student name: ")
@@ -24,6 +26,7 @@ def add_students():
         "city" : city
     }
     students.append(student)
+    save_students()
     print("Student added Successfully! ")
 
 def view_students():
@@ -36,6 +39,7 @@ def view_students():
         display_student(student)
         print("-------------------------------------")
 
+
 def search_student_by_name():
     search_name = input("Enter student name: ").strip()
     found = False
@@ -47,6 +51,7 @@ def search_student_by_name():
             
     if not found :
         print("Student not found.")
+
 
 def search_student_by_age():
     search_age = input("Enter student age: ").strip()
@@ -73,6 +78,7 @@ def search_student_by_city():
             
     if not found :
         print("Student not found.")
+
 
 def search_student():
     print("\n=====SEARCH MENU=====")
@@ -114,12 +120,15 @@ def update_student():
             if new_city :
                 student["city"] = new_city
 
+            save_students()
             print("\nUpdated Student:")
             display_student(student)
             break
 
     if not found :
         print("Student not found.")
+
+
 def delete_student():
     name = input("Enter student name: ").strip()
     found = False
@@ -133,6 +142,7 @@ def delete_student():
             confirm = input("Delete this student? (Y/N): ").lower().strip()
             if confirm == "y":
                 students.remove(student)
+                save_students()
                 print("Student deleted successfully!")
                 view_students()
                 break
@@ -148,7 +158,47 @@ def delete_student():
         print("Student not found.")
 
 
+def load_students():
+    print("\nLoading students...\n")
+
+    try:
+        file = open("students.txt" , "r")
+
+        for line in file:
+            line = line.strip()
+            parts = line.split(",")
+
+            student = {
+                "name": parts[0],
+                "age": parts[1],
+                "city": parts[2]
+            }
+
+            students.append(student)
+
+        file.close()
+
+        print(f"{len(students)} students loaded successfully!")
+
+    except FileNotFoundError:
+        print("No student file found . Starting fresh.")
+
+def save_students():
+
+    with open("students.txt" , "w") as file:
+
+        for student in students:
+            line = (f"{student['name']},{student['age']},{student['city']}\n")
+            file.write(line)
+
+    print("Students saved successfully!")
+
+
+
 def main():
+    print()
+    load_students()
+
     while True:
         show_menu()
         choice = input("Enter your choice: ")
@@ -169,5 +219,7 @@ def main():
             break
 
         else:
-            print("Invalid Choice!")     
+            print("Invalid Choice!")    
+
+
 main()       

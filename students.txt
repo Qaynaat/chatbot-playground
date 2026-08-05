@@ -1,0 +1,4 @@
+Rm,32,Seoul
+Jin,34,Gyeonggi Province
+Yoongi,33,Daegu
+Jimin,30,Busan
