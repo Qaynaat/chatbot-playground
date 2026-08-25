@@ -1,3 +1,4 @@
+import json
 students = []
 def show_menu():
     print("\n ==========STUDENT MANAGEMENT SYSTEM=======")
@@ -18,7 +19,7 @@ def display_student(student):
 
 def add_students():
     name = input("Enter Student name: ")
-    age = input("Enter Student age: ")
+    age = int(input("Enter Student age: "))
     city = input("Enter Student city: ")
     student = {
         "name" : name ,
@@ -44,7 +45,7 @@ def search_student_by_name():
     search_name = input("Enter student name: ").strip()
     found = False
     for student in students:
-        if student["name"].lower()== search_name.lower():
+        if search_name.lower() in student["name"].lower():
             found = True
             print("\n Student Found!")
             display_student(student)
@@ -54,7 +55,12 @@ def search_student_by_name():
 
 
 def search_student_by_age():
-    search_age = input("Enter student age: ").strip()
+    try:
+        search_age = int(input("Enter student age: "))
+    except ValueError:
+        print("Invalid age input!")
+        return
+    
     found = False 
     for student in students:
         if student["age"] == search_age:
@@ -71,7 +77,7 @@ def search_student_by_city():
     search_city =input("Enter student city name: ").strip()
     found = False 
     for student in students :
-        if student["city"].lower() == search_city.lower():
+        if search_city.lower() in student["city"].lower():
             found = True 
             print("\n Student Found!")
             display_student(student)
@@ -103,27 +109,35 @@ def update_student():
     name = input("Enter student name: ").strip()
     found = False
     for student in students:
-        if student["name"].lower()== name.lower():
+        if name in student["name"].lower():
             found = True
             print("\n====CURRENT STUDENT DATA====")
             display_student(student)
             print("------------------------------")
+            confirm = input("Update this student? (Y/N): ").lower().strip()
+            if confirm == "y":
+                new_name = input(f"Enter new name (press Enter to keep current): ").strip()
+                new_age = (input(f"Enter new age (press Enter to keep current): ")).strip()
+                new_city = input(f"Enter new city (press Enter to keep current): ").strip()
 
-            new_name = input(f"Enter new name (press Enter to keep current): ").strip()
-            new_age = input(f"Enter new age (press Enter to keep current): ").strip()
-            new_city = input(f"Enter new city (press Enter to keep current): ").strip()
+                if new_name :
+                    student["name"] = new_name
+                if new_age :
+                    student["age"] = int(new_age)
+                if new_city :
+                    student["city"] = new_city
 
-            if new_name :
-                student["name"] = new_name
-            if new_age :
-                student["age"] = new_age
-            if new_city :
-                student["city"] = new_city
+                save_students()
+                print("\nUpdated Student:")
+                display_student(student)
+                break
+            
+            elif confirm == "n":
+                print("Skipping this student...\n")
+                continue
 
-            save_students()
-            print("\nUpdated Student:")
-            display_student(student)
-            break
+            else:
+                print("Invalid choice.")
 
     if not found :
         print("Student not found.")
@@ -133,7 +147,7 @@ def delete_student():
     name = input("Enter student name: ").strip()
     found = False
     for student in students:
-        if student["name"].lower()== name.lower():
+        if name in student["name"].lower():
             found = True
             print("\n====CURRENT STUDENT DATA====")
             display_student(student)
@@ -148,8 +162,8 @@ def delete_student():
                 break
 
             elif confirm == "n":
-                print("Deletion cancelled.")
-                break
+                print("Skipping this student...\n")
+                continue
 
             else:
                 print("Invalid choice.")
@@ -157,47 +171,27 @@ def delete_student():
     if not found :
         print("Student not found.")
 
-
 def load_students():
-    print("\nLoading students...\n")
-
     try:
-        file = open("students.txt" , "r")
-
-        for line in file:
-            line = line.strip()
-            parts = line.split(",")
-
-            student = {
-                "name": parts[0],
-                "age": parts[1],
-                "city": parts[2]
-            }
-
-            students.append(student)
-
-        file.close()
-
-        print(f"{len(students)} students loaded successfully!")
-
+        with open("students.json" , "r") as file:
+            data = json.load(file)
+            print(f"Loaded {len(data)} student(s).")
+            return data 
     except FileNotFoundError:
-        print("No student file found . Starting fresh.")
+        print("No existing data found .Starting Fresh")
+        return[]
+
+students = load_students()
 
 def save_students():
+    with open("students.json" , "w") as file:
+         json.dump(students, file, indent=4)
 
-    with open("students.txt" , "w") as file:
-
-        for student in students:
-            line = (f"{student['name']},{student['age']},{student['city']}\n")
-            file.write(line)
-
-    print("Students saved successfully!")
-
-
+    print("Students saved successfully!")   
 
 def main():
     print()
-    load_students()
+
 
     while True:
         show_menu()
