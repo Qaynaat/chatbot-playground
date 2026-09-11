@@ -7,7 +7,7 @@ class Student():
         return f"\nName: {self.name} \nAge: {self.age}\n"
 
     def __repr__(self):
-        return f"Student(name='{self.name}' , age='{self.age}')\n"
+        return f"Student(name='{self.name}' , age={self.age})\n"
 
 s1 = Student("Aou" , 27)
 print(s1)
