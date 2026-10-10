@@ -15,9 +15,13 @@ class UniversityStudent(Student):
 
 try:
     s1 = Student("Santa" , -22 , "Chiang Mai")
-    s5 = UniversityStudent("William" , -21 , "HatYai" , "Mahidol University")
 except ValueError as e:
-    print(f"Error: {e}")
+    print(f"Santa Error: {e}")
+
+try:
+    s5 = UniversityStudent("William", -21, "HatYai", "Mahidol University")
+except ValueError as e:
+    print(f"William Error: {e}")
 
 s2 = UniversityStudent("Sky" , 28 , "Ranong" , "Thammasat University")
 s3 = UniversityStudent("Nani" , 28 , "Chiang Mai" , "Ramkhamhaeng University")
